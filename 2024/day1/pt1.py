@@ -29,7 +29,6 @@ def main():
     
     args = parser.parse_args()
 
-    # Run the function with the file path provided as an argument
     total_sum = take_in_and_add(args.file_path)
     
     print(f"Total sum of absolute differences: {total_sum}")

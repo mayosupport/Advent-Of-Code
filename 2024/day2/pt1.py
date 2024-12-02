@@ -1,10 +1,8 @@
 import argparse
-import sys
-
 
 def is_valid_row(row):
     # Check if the row is increasing or decreasing and if all adjacent differences are between 1 and 3
-    increasing = None  # Track whether it's increasing or decreasing
+    increasing = None
     for i in range(1, len(row)):
         diff = abs(row[i] - row[i - 1])
 
@@ -17,12 +15,12 @@ def is_valid_row(row):
             if increasing is None:
                 increasing = True
             elif increasing is False:
-                return False  # Mixed direction, break early
+                return False  # Bad direction
         elif row[i] < row[i - 1]:
             if increasing is None:
                 increasing = False
             elif increasing is True:
-                return False  # Mixed direction, break early
+                return False  # Bad direction
     
     # If we reach here, it means the row satisfies all conditions
     return True
@@ -43,10 +41,9 @@ def main():
     # Run the function with the file path provided as an argument
     file = open(args.file_path, 'r')
 
-    vals = []
-    for line in file:
-        row = list(map(int, line.strip().split()))
-        vals.append(row)
+    # Open and read the file
+    with open(args.file_path, 'r') as file:
+        vals = [list(map(int, line.strip().split())) for line in file]
     
     valid_rows = count_valid_rows(vals)
     
