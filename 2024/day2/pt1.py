@@ -38,7 +38,6 @@ def main():
     
     args = parser.parse_args()
 
-    # Run the function with the file path provided as an argument
     file = open(args.file_path, 'r')
 
     # Open and read the file

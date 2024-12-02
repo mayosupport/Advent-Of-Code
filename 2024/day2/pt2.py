@@ -2,7 +2,7 @@ import argparse
 
 def is_valid_row(row):
     # Check if the row is increasing or decreasing and if all adjacent differences are between 1 and 3
-    increasing = None  # Track whether it's increasing or decreasing
+    increasing = None
 
     for i in range(1, len(row)):
         diff = abs(row[i] - row[i - 1])
