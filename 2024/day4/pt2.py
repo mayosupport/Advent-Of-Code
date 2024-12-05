@@ -29,7 +29,7 @@ def count_occurrences(puzzle):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Process file and calculate sum of absolute differences.")
+    parser = argparse.ArgumentParser(description="Count the total number of X'ed MAS's.")
     parser.add_argument('file_path', type=str, help="Path to the input file.")
     
     args = parser.parse_args()
@@ -42,9 +42,7 @@ def main():
 
     occ = count_occurrences(puzzle)
     
-    print(f'TOTAL OCCURENCES: {occ}')
-
-    #print(f"Total sum of absolute differences: {total_sum}")
+    print(f"Number of X'ed MAS's: {occ}")
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,5 @@
 import argparse
+import time
 
 def correct_sequence(rules, sequence):
     # Needs to be some topological sort
@@ -89,7 +90,6 @@ def get_rule_and_page_lists(file_content):
         if current_delimiter == '|':  # For rules, split on the '|' symbol
             before, after = map(int, nums)
             rule_lines.append((before, after))  # Store the rule as a tuple
-            print(f"Rule parsed: {before} before {after}")  # Debug print
         else:
             # For page sequences, split by commas and store them as lists of integers
             page_lines.append(list(map(int, nums)))
@@ -98,22 +98,29 @@ def get_rule_and_page_lists(file_content):
 
 
 def main():
+    start_time = time.perf_counter()
+    
+    # Open and read the file
     parser = argparse.ArgumentParser(description="Process file and calculate sum of absolute differences.")
     parser.add_argument('file_path', type=str, help="Path to the input file.")
     
     args = parser.parse_args()
 
-    # Open and read the file
     with open(args.file_path, 'r') as file:
         content = file.read()
         rules, page_lists = get_rule_and_page_lists(content)
     
     valid_seqs, validated_seqs = count_valid_lists(rules, page_lists)
     sum_of_mids = sum_midpoints(validated_seqs)
-    print(len(validated_seqs))
-    print(sum_of_mids)
 
     print(f"Total sum of corrected sequence midpoints: {sum_of_mids}")
+
+    # Stop the timer after execution
+    end_time = time.perf_counter()
+
+    # Calculate elapsed time in seconds
+    elapsed_time_sec = end_time - start_time
+    print(f"Execution time: {elapsed_time_sec:.6f} seconds")
 
 if __name__ == "__main__":
     main()
