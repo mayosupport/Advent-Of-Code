@@ -66,20 +66,7 @@ def count_valid_lists(rules, page_sequences):
     return valid_sequences, validated_sequences
 
 def sum_midpoints(sequences):
-    total = 0
-
-    for sequence in sequences:
-        length = len(sequence)
-        if length == 0:
-            continue
-
-        if length % 2 == 1:
-            mid = sequence[length // 2]
-        else:
-            print('We shouldnt get even numbers right???')
-
-        total += mid
-    return total
+    return sum(sequence[len(sequence) // 2] for sequence in sequences if len(sequence) % 2 == 1)
 
 def get_rule_and_page_lists(file_content):
     rule_lines = []
