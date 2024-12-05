@@ -58,7 +58,6 @@ def get_rule_and_page_lists(file_content):
         
         # Parse numbers based on the current delimiter
         nums = line.split(current_delimiter)
-         # For rules, split on the '|' symbol
         if current_delimiter == '|':
             before, after = map(int, nums)
             rule_lines.append((before, after))  # Store the rule as a tuple
