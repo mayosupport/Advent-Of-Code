@@ -33,7 +33,8 @@ def sum_midpoints(sequences):
         length = len(sequence)
         if length == 0:
             continue
-
+        
+        # Only getting midpoint if the sequence length is odd
         if length % 2 == 1:
             mid = sequence[length // 2]
         else:
