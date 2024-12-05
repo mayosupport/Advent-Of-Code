@@ -18,7 +18,7 @@ def count_valid_lists(rules, page_sequences):
                     break
 
             except ValueError:
-                # If either number isnt in sequence it is invalid
+                # If either number isnt in sequence it is ignored
                 continue
         if valid:
             valid_sequences.append(sequence)
@@ -46,24 +46,22 @@ def get_rule_and_page_lists(file_content):
     rule_lines = []
     page_lines = []
     
-    # Start with rule-set
-    current_list = rule_lines
+    # Start with rule-set (delimited with '|')
     current_delimiter = '|'
 
     # Process lines
     for line in file_content.splitlines():
         # Skip empty lines and use them as a section delimiter
         if not line.strip():
-            current_list = page_lines
-            current_delimiter = ','  # Page numbers are separated by commas
+            current_delimiter = ',' 
             continue
         
         # Parse numbers based on the current delimiter
         nums = line.split(current_delimiter)
-        if current_delimiter == '|':  # For rules, split on the '|' symbol
+         # For rules, split on the '|' symbol
+        if current_delimiter == '|':
             before, after = map(int, nums)
             rule_lines.append((before, after))  # Store the rule as a tuple
-            print(f"Rule parsed: {before} before {after}")  # Debug print
         else:
             # For page sequences, split by commas and store them as lists of integers
             page_lines.append(list(map(int, nums)))
@@ -84,10 +82,7 @@ def main():
     
     valid_seqs = count_valid_lists(rules, page_lists)
     sum_of_mids = sum_midpoints(valid_seqs)
-    print(len(valid_seqs))
-    print(sum_of_mids)
-
-    #print(f"Total sum of absolute differences: {total_sum}")
+    print(f"Total sum of valid sequence midpoints: {sum_of_mids}")
 
 if __name__ == "__main__":
     main()
