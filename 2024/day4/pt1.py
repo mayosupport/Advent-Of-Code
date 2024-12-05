@@ -27,22 +27,19 @@ def count_occurrences(word, puzzle):
     return word_count
 
 def main():
-    parser = argparse.ArgumentParser(description="Process file and calculate sum of absolute differences.")
-    parser.add_argument('file_path', type=str, help="Path to the input file.")
+    parser = argparse.ArgumentParser(description="Determine occurrences of a word (default=XMAS) in a word search puzzle.")
+    parser.add_argument('file_path', type=str, help="Path to the input file with word search puzzle.")
+    parser.add_argument('--word', type=str, default='XMAS', help="Word to search for (default: 'XMAS')")
     
     args = parser.parse_args()
-
+    word = args.word
     # Open and read the file
     with open(args.file_path, 'r') as file:
         puzzle = [line.strip() for line in file]
 
-    print(puzzle)
-
-    occ = count_occurrences('XMAS', puzzle)
+    occ = count_occurrences(word, puzzle)
     
-    print(f'TOTAL OCCURENCES: {occ}')
-
-    #print(f"Total sum of absolute differences: {total_sum}")
+    print(f"Total occurences of the word '{word}': {occ}")
 
 if __name__ == "__main__":
     main()
