@@ -1,32 +1,37 @@
 import argparse
 import time
 
-DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
+DIRECTIONS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
 def predict_path(puzzle, guard_start):
+    def in_bounds(line, char):
+        return 0 <= line < len(puzzle) and 0 <= char < len(puzzle[0])
+    
     points_visited = set()
 
     curr_line, curr_char = guard_start
     curr_direction_idx = 0
-    while True:
+
+    max_iterations = len(puzzle) * len(puzzle[0]) * 4
+    iterations = 0
+
+    while in_bounds(curr_line, curr_char):
         points_visited.add((curr_line, curr_char))
 
-        ln_mov, char_mov = DIRECTIONS[curr_direction_idx]
+        next_line = curr_line + DIRECTIONS[curr_direction_idx][0]
+        next_char = curr_char + DIRECTIONS[curr_direction_idx][1]
 
-        next_line = curr_line + ln_mov
-        next_char = curr_char + char_mov
+        iterations += 1
+        if iterations > max_iterations:
+            break
 
-        # Check if the new position is out of bounds
-        if not (0 <= next_line < len(puzzle) and 0 <= next_char < len(puzzle[0])):
-            break  # Stop if the guard moves out of bounds
-
-        next_pos = puzzle[next_line][next_char]
-
-        if next_pos == '#':
-            curr_direction_idx = (curr_direction_idx + 1) % 4
+        if not in_bounds(next_line, next_char) or puzzle[next_line][next_char] == '#':
+            curr_direction_idx = (curr_direction_idx + 1 ) % 4
         else:
-            curr_line = next_line
-            curr_char = next_char
+            curr_line, curr_char = next_line, next_char
+
+        if not in_bounds(next_line, next_char):
+            break
     
     return points_visited
 
@@ -45,9 +50,7 @@ def main():
             puzzle.append(line.strip())
 
             if '^' in line:
-                for char_num, char in enumerate(line):
-                    if char == '^':
-                        guard_coords = (line_num, char_num)
+                guard_coords = (line_num, line.index('^'))
 
     predicted_path = predict_path(puzzle, guard_coords)
 
