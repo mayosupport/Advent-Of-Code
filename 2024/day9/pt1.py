@@ -1,70 +1,84 @@
 import argparse
 import time
 
-def compact_disk(disk_map):
-    # Convert the disk map into a list of file lengths and free space lengths
+def parse_disk_map(disk_map):
     blocks = []
-    for i in range(0, len(disk_map), 2):
-        file_length = int(disk_map[i])  # file block length (digit)
-        try:
-            free_space_length = int(disk_map[i + 1])
-        except IndexError:
-            free_space_length = None
-        
-        # Add file blocks to the list
-        for _ in range(file_length):
-            blocks.append(i // 2)  # Add file block with its ID (i//2 is the ID of the file)
-        
-        # Add free spaces to the list
-        if not free_space_length:
-            continue
-        for _ in range(free_space_length):
-            blocks.append('.')
-
-    compact_blocks = blocks.copy()
-    for i, char in enumerate(reversed(blocks)):
-        if char == '.':
-            continue
-
-        replace_idx = compact_blocks.index('.')
-        print(f'BLOCK AT {replace_idx} BEFORE REPLACE: {compact_blocks[replace_idx]}')
-        compact_blocks[replace_idx] = char
-        print(f'BLOCK AT {replace_idx} AFTER REPLACE: {compact_blocks[replace_idx]}')
-        compact_blocks[-i] = '.'
-
-        print(f'START OF LIST: {compact_blocks[0:20]}')
-        print(f'END OF LIST (INDEX {-i}): {compact_blocks[i]}')
+    file_id = 0
     
-    return compact_blocks
+    # Remove any whitespace and newlines
+    disk_map = disk_map.strip()
+    
+    for i in range(0, len(disk_map), 2):
+        file_length = int(disk_map[i])
+        
+        # Add file blocks
+        for _ in range(file_length):
+            blocks.append(file_id)
+            
+        # Add free space if there is a next number
+        if i + 1 < len(disk_map):
+            free_space_length = int(disk_map[i + 1])
+            for _ in range(free_space_length):
+                blocks.append('.')
+                
+        file_id += 1
+    
+    return blocks
 
+def compact_disk(blocks):
+    result = blocks.copy()
+    
+    # Iterate through the blocks from right to left
+    right_idx = len(blocks) - 1
+    while right_idx >= 0:
+        # Skip free space at the end
+        while right_idx >= 0 and result[right_idx] == '.':
+            right_idx -= 1
+            
+        if right_idx < 0:
+            break
+            
+        # Find leftmost free space
+        left_idx = 0
+        while left_idx < right_idx and result[left_idx] != '.':
+            left_idx += 1
+            
+        if left_idx >= right_idx:
+            break
+            
+        # Move the file block
+        result[left_idx] = result[right_idx]
+        result[right_idx] = '.'
+        right_idx -= 1
+        
+    return result
 
-def calculate_checksum(compaction):
-    # Calculate checksum: position * file_id for each file block
+def calculate_checksum(blocks):
     checksum = 0
-    for pos, block in enumerate(compaction):
+    for pos, block in enumerate(blocks):
         if block != '.':
-            checksum += pos * block  # Multiply the position with the file ID
+            checksum += pos * block
     return checksum
 
 def main():
     start_time = time.perf_counter()
-    
-    # Open and read the file
-    parser = argparse.ArgumentParser(description="Process file and calculate sum of absolute differences.")
+
+    parser = argparse.ArgumentParser(description="Process disk map and calculate checksum.")
     parser.add_argument('file_path', type=str, help="Path to the input file.")
-    
+
     args = parser.parse_args()
-    puzzle = []
+
+    # Read input file
     with open(args.file_path, 'r') as file:
-        disk_map = file.read()
+        disk_map = file.read().strip()
 
-    compaction = compact_disk(disk_map)
-    checksum = calculate_checksum(compaction)
+    initial_blocks = parse_disk_map(disk_map)
+    compacted_blocks = compact_disk(initial_blocks)
+    checksum = calculate_checksum(compacted_blocks)
 
-    # Stop the timer after execution
     end_time = time.perf_counter()
     print(f"Execution time: {end_time - start_time:.6f} seconds")
-    print(f"Total checksum: {checksum}")
+    print(f"Final checksum: {checksum}")
 
 if __name__ == "__main__":
     main()
