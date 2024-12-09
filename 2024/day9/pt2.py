@@ -29,7 +29,8 @@ def get_file_positions(blocks):
     file_positions = {}
     current_file = None
     start_pos = None
-
+    
+    # Get position range for each file block
     for pos, block in enumerate(blocks):
         if block != '.':
             if block != current_file:
