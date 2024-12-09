@@ -52,6 +52,7 @@ def find_leftmost_space(blocks, required_length, start_pos=0):
     current_length = 0
     start_of_space = None
 
+    # Get furthest left position with enough empty spaces
     for pos in range(start_pos, len(blocks)):
         if blocks[pos] == '.':
             if start_of_space is None:

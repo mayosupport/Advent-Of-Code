@@ -20,9 +20,6 @@ def find_antinode_positions(pairs, grid):
             rise = pos2[0] - pos1[0]
             run = pos2[1] - pos1[1]
 
-            print(f'PAIR: {pair}')
-            print(f'RISE/RUN: {rise}/{run}')
-
             curr_row = pos1[0]
             curr_col = pos1[1]
 
@@ -61,9 +58,6 @@ def find_all_pairs(grid):
             else:
                 identified_char_positions[char] = [(idx, jdx)]
                 identified_char_pairs[char] = []
-
-    from pprint import pprint
-    pprint(identified_char_pairs)
 
     return identified_char_pairs
 

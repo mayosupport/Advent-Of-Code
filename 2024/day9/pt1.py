@@ -54,6 +54,7 @@ def compact_disk(blocks):
     return result
 
 def calculate_checksum(blocks):
+    # Add up all ID * pos
     checksum = 0
     for pos, block in enumerate(blocks):
         if block != '.':

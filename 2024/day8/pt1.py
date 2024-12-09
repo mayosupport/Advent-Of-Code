@@ -20,37 +20,28 @@ def find_antinode_positions(pairs, grid):
             rise = pos2[0] - pos1[0]
             run = pos2[1] - pos1[1]
 
-            print(f'PAIR: {pair}')
-            print(f'RISE/RUN: {rise}/{run}')
-
             for pos in pair:
                 potential_antinode_row = pos[0] + rise
                 potential_antinode_col = pos[1] + run
 
-                print(f'POSITION: {pos}')
-                print(f'POTENTIAL ANTINODE POS: {(potential_antinode_row, potential_antinode_col)}')
-
                 if not 0 <= potential_antinode_row <= row_bounds:
-                    print('CANT PLACE IT HERE, OUT OF ROW BOUNDS')
+                    pass
                 elif not 0 <= potential_antinode_col <= column_bounds:
-                    print('CANT PLACE HERE, OUTSIDE COL BOUNDS')
+                    pass
                 elif grid[potential_antinode_row][potential_antinode_col] == char:
-                    print('CANT PLACE HERE, CHARACTER ALREADY HERE!')
+                    pass
                 else:
                     antinode_positions.add((potential_antinode_row, potential_antinode_col))
 
                 potential_antinode_row = pos[0] - rise
                 potential_antinode_col = pos[1] - run
 
-                print(f'POSITION: {pos}')
-                print(f'POTENTIAL ANTINODE POS: {(potential_antinode_row, potential_antinode_col)}')
-
                 if not 0 <= potential_antinode_row <= row_bounds:
-                    print('CANT PLACE IT HERE, OUT OF ROW BOUNDS')
+                    pass
                 elif not 0 <= potential_antinode_col <= column_bounds:
-                    print('CANT PLACE HERE, OUTSIDE COL BOUNDS')
+                    pass
                 elif grid[potential_antinode_row][potential_antinode_col] == char:
-                    print('CANT PLACE HERE, CHARACTER ALREADY HERE!')
+                    pass
                 else:
                     antinode_positions.add((potential_antinode_row, potential_antinode_col))
 
